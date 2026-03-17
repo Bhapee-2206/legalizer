@@ -1,0 +1,1314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Legalizer - Indian Constitutional Laws</title>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital@0;1&family=Playfair+Display:wght@700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #1a2745;
+            --secondary: #c9a961;
+            --accent: #d97706;
+            --text: #0f1419;
+            --light-bg: #f5f3ed;
+            --card-bg: #ffffff;
+            --border: #e5ddd0;
+            --gold-light: #fef3e2;
+            --success: #047857;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--light-bg) 0%, #faf8f3 100%);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, #0f1f37 100%);
+            color: white;
+            padding: 2rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 8px 32px rgba(26, 39, 69, 0.15);
+            border-bottom: 3px solid var(--secondary);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            font-weight: 900;
+            letter-spacing: -1px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--secondary);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            color: var(--primary);
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        .search-bar {
+            display: flex;
+            gap: 0.5rem;
+            max-width: 400px;
+            flex: 1;
+            margin: 0 3rem;
+        }
+
+        .search-bar input {
+            flex: 1;
+            padding: 0.75rem 1.2rem;
+            border: 2px solid rgba(201, 169, 97, 0.3);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 0.95rem;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        .search-bar input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .search-bar input:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.15);
+            border-color: var(--secondary);
+            box-shadow: 0 0 20px rgba(201, 169, 97, 0.2);
+        }
+
+        .search-btn {
+            padding: 0.75rem 1.5rem;
+            background: var(--secondary);
+            color: var(--primary);
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .search-btn:hover {
+            background: #d9a870;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(201, 169, 97, 0.3);
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 3rem auto;
+            padding: 0 2rem;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            margin-bottom: 4rem;
+            animation: slideInDown 0.8s ease;
+        }
+
+        @keyframes slideInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            font-weight: 900;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            letter-spacing: -1px;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: #555;
+            margin-bottom: 0.5rem;
+            font-style: italic;
+        }
+
+        .tagline {
+            color: var(--secondary);
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        /* Filter Buttons */
+        .filter-section {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .filter-btn {
+            padding: 0.7rem 1.5rem;
+            border: 2px solid var(--border);
+            background: white;
+            color: var(--text);
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(26, 39, 69, 0.2);
+        }
+
+        /* Laws Grid */
+        .laws-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .law-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            cursor: pointer;
+            border-left: 5px solid var(--secondary);
+            display: flex;
+            flex-direction: column;
+            animation: fadeInUp 0.6s ease backwards;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .law-card:nth-child(1) { animation-delay: 0.1s; }
+        .law-card:nth-child(2) { animation-delay: 0.2s; }
+        .law-card:nth-child(3) { animation-delay: 0.3s; }
+        .law-card:nth-child(4) { animation-delay: 0.4s; }
+        .law-card:nth-child(5) { animation-delay: 0.5s; }
+        .law-card:nth-child(6) { animation-delay: 0.6s; }
+
+        .law-card:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 20px 40px rgba(26, 39, 69, 0.15);
+            border-left-color: var(--accent);
+        }
+
+        .law-header {
+            background: linear-gradient(135deg, #f0ede5 0%, #faf8f3 100%);
+            padding: 1.5rem;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .law-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 0.85rem;
+            color: var(--secondary);
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+        }
+
+        .law-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: var(--primary);
+            font-weight: 700;
+            line-height: 1.3;
+        }
+
+        .law-content {
+            padding: 1.5rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .law-description {
+            color: #555;
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+            line-height: 1.7;
+        }
+
+        .law-category {
+            display: inline-block;
+            background: var(--gold-light);
+            color: #b45309;
+            padding: 0.35rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            width: fit-content;
+        }
+
+        .law-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .law-status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            color: var(--success);
+            font-weight: 600;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--success);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .read-more {
+            color: var(--secondary);
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .read-more:hover {
+            color: var(--accent);
+            transform: translateX(5px);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 3rem;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 700px;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+            animation: slideUp 0.4s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 1.5rem;
+        }
+
+        .modal-header h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: var(--primary);
+            flex: 1;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 2rem;
+            color: var(--text);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .close-btn:hover {
+            color: var(--accent);
+            transform: rotate(90deg);
+        }
+
+        .modal-body {
+            color: #555;
+            line-height: 1.8;
+        }
+
+        .modal-body h3 {
+            color: var(--primary);
+            margin-top: 1.5rem;
+            margin-bottom: 0.8rem;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+        }
+
+        .modal-body p {
+            margin-bottom: 1rem;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--primary);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+            margin-top: 4rem;
+            border-top: 3px solid var(--secondary);
+        }
+
+        footer p {
+            margin-bottom: 0.5rem;
+            opacity: 0.9;
+        }
+
+        .footer-links {
+            margin-top: 1.5rem;
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: var(--secondary);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+
+            .search-bar {
+                margin: 0;
+                max-width: 100%;
+            }
+
+            .logo {
+                font-size: 1.8rem;
+            }
+
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+
+            .laws-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-content {
+                padding: 2rem;
+                width: 95%;
+            }
+        }
+
+        /* No results */
+        .no-results {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: #888;
+        }
+
+        .no-results h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-content">
+            <div class="logo">
+                <div class="logo-icon">⚖️</div>
+                <span>Legalizer</span>
+            </div>
+            <div class="search-bar">
+                <input type="text" id="searchInput" placeholder="Search laws by article, keyword...">
+                <button class="search-btn" onclick="handleSearch()">Search</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Hero -->
+        <div class="hero">
+            <h1>Indian Constitutional Laws</h1>
+            <p>Explore the foundational framework of the Indian Constitution</p>
+            <div class="tagline">Know Your Rights • Understand Your Duties</div>
+        </div>
+
+        <!-- Filters -->
+        <div class="filter-section">
+            <button class="filter-btn active" onclick="filterLaws('all')">All Laws</button>
+            <button class="filter-btn" onclick="filterLaws('fundamental')">Fundamental Rights</button>
+            <button class="filter-btn" onclick="filterLaws('directive')">Directive Principles</button>
+            <button class="filter-btn" onclick="filterLaws('structure')">Constitutional Structure</button>
+            <button class="filter-btn" onclick="filterLaws('amendments')">Amendments</button>
+        </div>
+
+        <!-- Laws Grid -->
+        <div class="laws-grid" id="lawsGrid"></div>
+    </div>
+
+    <!-- Modal -->
+    <div id="lawModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Article Title</h2>
+                <button class="close-btn" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="modalBody"></div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 Legalizer - Your Guide to Indian Constitutional Laws</p>
+        <p>Dedicated to making constitutional knowledge accessible to all citizens</p>
+        <p>Designed by Bhapee studios</p>
+        <div class="footer-links">
+            <a href="#home">Home</a>
+            <a href="#about">About</a>
+            <a href="#contact">Contact</a>
+            <a href="#privacy">Privacy Policy</a>
+        </div>
+    </footer>
+
+    <script>
+        // Constitutional Laws Data
+        const constitutionalLaws = [
+            {
+                id: 1,
+                article: "Article 12",
+                title: "Definition of State",
+                category: "Constitutional Structure",
+                type: "structure",
+                description: "Defines what constitutes 'the State' under the Indian Constitution, including the Government and various bodies.",
+                fullText: "For the purposes of this Part, 'the State' includes the Government and Parliament of India and the Government and the Legislature of each of the States and all local or other authorities within the territory of India or under the control of the Government of India.",
+                status: "Active",
+                keywords: ["state", "definition", "government", "authority"]
+            },
+            {
+                id: 2,
+                article: "Article 14",
+                title: "Equality Before Law",
+                category: "Fundamental Rights",
+                type: "fundamental",
+                description: "Guarantees equality before the law and equal protection of the laws without discrimination.",
+                fullText: "The State shall not deny to any person equality before the law or the equal protection of the laws within the territory of India.",
+                status: "Active",
+                keywords: ["equality", "discrimination", "fundamental rights", "protection"]
+            },
+            {
+                id: 3,
+                article: "Article 15",
+                title: "Prohibition of Discrimination",
+                category: "Fundamental Rights",
+                type: "fundamental",
+                description: "Prohibits discrimination by the state on grounds of religion, race, caste, sex or place of birth.",
+                fullText: "The State shall not discriminate against any citizen on grounds only of religion, race, caste, sex, place of birth or any of them.",
+                status: "Active",
+                keywords: ["discrimination", "religion", "caste", "sex", "fundamental rights"]
+            },
+            {
+                id: 4,
+                article: "Article 19",
+                title: "Protection of Certain Rights",
+                category: "Fundamental Rights",
+                type: "fundamental",
+                description: "Guarantees citizens freedom of speech, assembly, movement, and profession subject to reasonable restrictions.",
+                fullText: "All citizens shall have the right to freedom of speech and expression; freedom to assemble peaceably and without arms; freedom to form associations or unions.",
+                status: "Active",
+                keywords: ["freedom", "speech", "assembly", "expression", "movement"]
+            },
+            {
+                id: 5,
+                article: "Article 21",
+                title: "Right to Life and Liberty",
+                category: "Fundamental Rights",
+                type: "fundamental",
+                description: "Protects the right to life and personal liberty, which has been interpreted very broadly by the Supreme Court.",
+                fullText: "No person shall be deprived of his life or personal liberty except according to procedure established by law.",
+                status: "Active",
+                keywords: ["right to life", "liberty", "procedure", "protection"]
+            },
+            {
+                id: 6,
+                article: "Article 25",
+                title: "Freedom of Religion",
+                category: "Fundamental Rights",
+                type: "fundamental",
+                description: "Guarantees freedom of conscience and the right to freely profess, practice and propagate religion.",
+                fullText: "Subject to public order, morality and health and to the other provisions of this Part, all persons are equally entitled to freedom of conscience and the right freely to profess, practise and propagate religion.",
+                status: "Active",
+                keywords: ["religion", "freedom", "conscience", "propagate"]
+            },
+            {
+                id: 7,
+                article: "Article 36",
+                title: "Definition of State",
+                category: "Directive Principles",
+                type: "directive",
+                description: "Provides definitions for terms used in the chapter on Directive Principles of State Policy.",
+                fullText: "In this Part, unless the context otherwise requires, the State has the same meaning as in Part III.",
+                status: "Active",
+                keywords: ["directive", "definition", "state policy"]
+            },
+            {
+                id: 8,
+                article: "Article 39",
+                title: "Certain Principles of Policy",
+                category: "Directive Principles",
+                type: "directive",
+                description: "Directs the state to organize economic life to avoid concentration of wealth and ensure decent living standards.",
+                fullText: "The State shall direct its policy towards securing that the ownership and control of the material resources of the community are so distributed as best to subserve the common good.",
+                status: "Active",
+                keywords: ["directive principles", "economic", "wealth", "common good"]
+            },
+            {
+                id: 9,
+                article: "Article 51",
+                title: "Duty to Promote International Peace",
+                category: "Directive Principles",
+                type: "directive",
+                description: "Directs the state to promote international peace and security and develop peaceful relations with nations.",
+                fullText: "The State shall endeavour to promote international peace and security; maintain just and honourable relations between nations.",
+                status: "Active",
+                keywords: ["international", "peace", "relations", "nations"]
+            },
+            {
+                id: 10,
+                article: "Article 52",
+                title: "President of India",
+                category: "Constitutional Structure",
+                type: "structure",
+                description: "Establishes the office of the President of India as the head of state.",
+                fullText: "There shall be a President of India who shall be the head of the Union Executive.",
+                status: "Active",
+                keywords: ["president", "head of state", "executive", "union"]
+            },
+            {
+                id: 11,
+                article: "Article 79",
+                title: "Constitution of Parliament",
+                category: "Constitutional Structure",
+                type: "structure",
+                description: "Establishes the Parliament of India, consisting of the President and two Houses.",
+                fullText: "Parliament shall consist of the President and two Houses, to be known respectively as the Council of States and the House of the People.",
+                status: "Active",
+                keywords: ["parliament", "lok sabha", "rajya sabha", "legislature"]
+            },
+            {
+                id: 12,
+                article: "Amendment XLII",
+                title: "42nd Amendment",
+                category: "Amendments",
+                type: "amendments",
+                description: "Known as the 'Mini Constitution', introduced major changes including emergency powers and constitutional amendments.",
+                fullText: "The 42nd Amendment is the most significant amendment to the Indian Constitution, made in 1976. It altered the balance between fundamental rights and directive principles.",
+                status: "Active",
+                keywords: ["amendment", "1976", "emergency", "mini constitution"]
+            },
+            {
+                id: 13,
+                article: "Article 16",
+                title: "Equality of Opportunity in Public Employment",
+                category: "Fundamental Rights",
+                type: "fundamental",
+                description: "Guarantees equal opportunity for all citizens in matters relating to employment or appointment to any office under the State.",
+                fullText: "There shall be equality of opportunity for all citizens in matters relating to employment or appointment to any office under the State.",
+                status: "Active",
+                keywords: ["equality", "employment", "opportunity", "public office"]
+            },
+            {
+                id: 14,
+                article: "Article 17",
+                title: "Abolition of Untouchability",
+                category: "Fundamental Rights",
+                type: "fundamental",
+                description: "'Untouchability' is abolished and its practice in any form is forbidden. The enforcement of any disability arising out of 'Untouchability' is punishable.",
+                fullText: "'Untouchability' is abolished and its practice in any form is forbidden. The enforcement of any disability arising out of 'Untouchability' shall be an offence punishable in accordance with law.",
+                status: "Active",
+                keywords: ["untouchability", "abolition", "discrimination", "social justice"]
+            },
+            {
+                id: 15,
+                article: "Article 20",
+                title: "Protection in Respect of Conviction for Offences",
+                category: "Fundamental Rights",
+                type: "fundamental",
+                description: "Protection against retrospective criminal laws and double jeopardy. Provides safeguards in criminal proceedings.",
+                fullText: "No person shall be convicted of any offence except for violation of a law in force at the time of the commission of the act charged as an offence.",
+                status: "Active",
+                keywords: ["criminal law", "protection", "double jeopardy", "retrospective"]
+            },
+            {
+                id: 16,
+                article: "Article 22",
+                title: "Right to Constitutional Remedies",
+                category: "Fundamental Rights",
+                type: "fundamental",
+                description: "Provides the right to move the Supreme Court by appropriate proceedings for the enforcement of rights conferred by the Constitution.",
+                fullText: "The right to move the Supreme Court by appropriate proceedings for the enforcement of the rights conferred by this Part is guaranteed.",
+                status: "Active",
+                keywords: ["remedy", "supreme court", "constitutional rights", "enforcement"]
+            },
+            {
+                id: 17,
+                article: "Article 23",
+                title: "Prohibition of Traffic in Human Beings and Forced Labour",
+                category: "Fundamental Rights",
+                type: "fundamental",
+                description: "Prohibits trafficking of human beings and forced labour. Any violation is punishable according to law.",
+                fullText: "Traffic in human beings and begar and other similar forms of forced labour are prohibited and any contravention of this provision shall be an offence punishable in accordance with law.",
+                status: "Active",
+                keywords: ["human trafficking", "forced labour", "exploitation", "prohibition"]
+            },
+            {
+                id: 18,
+                article: "Article 24",
+                title: "Prohibition of Child Labour",
+                category: "Fundamental Rights",
+                type: "fundamental",
+                description: "No child below 14 years shall be employed to work in any factory, mine or other hazardous employment.",
+                fullText: "Nothing in this article shall apply to any work done by a child in connection with, and for the purposes of, its education or in a school or other educational institution.",
+                status: "Active",
+                keywords: ["child labour", "protection", "education", "employment"]
+            },
+            {
+                id: 19,
+                article: "Article 26",
+                title: "Freedom to Manage Religious Affairs",
+                category: "Fundamental Rights",
+                type: "fundamental",
+                description: "Subject to public order, morality and health, every religious denomination or organization has the right to manage its own affairs.",
+                fullText: "Subject to public order, morality and health, every religious denomination or organisation shall have the right to establish and maintain institutions for religious and charitable purposes.",
+                status: "Active",
+                keywords: ["religion", "freedom", "religious institutions", "management"]
+            },
+            {
+                id: 20,
+                article: "Article 28",
+                title: "Freedom as to Attendance at Religious Instruction",
+                category: "Fundamental Rights",
+                type: "fundamental",
+                description: "No person shall be required to take part in any religious instruction or religious worship in certain educational institutions.",
+                fullText: "No religious instruction shall be provided in any educational institution wholly maintained out of State funds.",
+                status: "Active",
+                keywords: ["religious instruction", "education", "freedom", "secular"]
+            },
+            {
+                id: 21,
+                article: "Article 29",
+                title: "Protection of Interests of Minorities",
+                category: "Fundamental Rights",
+                type: "fundamental",
+                description: "Any section of citizens having a distinct language, script or culture has the right to conserve the same.",
+                fullText: "Any section of the citizens residing in the territory of India or any part thereof having a distinct language, script or culture of its own shall have the right to conserve the same.",
+                status: "Active",
+                keywords: ["minorities", "language", "culture", "protection"]
+            },
+            {
+                id: 22,
+                article: "Article 30",
+                title: "Right of Minorities to Establish Educational Institutions",
+                category: "Fundamental Rights",
+                type: "fundamental",
+                description: "All minorities have the right to establish and administer educational institutions of their choice.",
+                fullText: "All minorities, whether based on religion or language, shall have the right to establish and administer educational institutions of their choice.",
+                status: "Active",
+                keywords: ["minorities", "education", "institutions", "rights"]
+            },
+            {
+                id: 23,
+                article: "Article 32",
+                title: "Right to Constitutional Remedies",
+                category: "Fundamental Rights",
+                type: "fundamental",
+                description: "The right to move the Supreme Court for enforcement of fundamental rights granted by the Constitution.",
+                fullText: "The right to move the Supreme Court by appropriate proceedings for the enforcement of the rights conferred by this Part is guaranteed.",
+                status: "Active",
+                keywords: ["constitutional remedy", "supreme court", "habeas corpus", "mandamus"]
+            },
+            {
+                id: 24,
+                article: "Article 40",
+                title: "Organization of Village Panchayats",
+                category: "Directive Principles",
+                type: "directive",
+                description: "The State shall take steps to organize village panchayats and endow them with such powers and authority.",
+                fullText: "The State shall take steps to organize village panchayats and endow them with such powers and authority as may be necessary to enable them to function as units of self-government.",
+                status: "Active",
+                keywords: ["panchayat", "village", "self-government", "local administration"]
+            },
+            {
+                id: 25,
+                article: "Article 41",
+                title: "Right to Work, to Education and to Public Assistance",
+                category: "Directive Principles",
+                type: "directive",
+                description: "The State shall endeavour to provide work, education, and public assistance within the limits of economic capacity.",
+                fullText: "Within the limits of its economic capacity and development, the State shall endeavour to provide work and education to all citizens.",
+                status: "Active",
+                keywords: ["employment", "education", "public assistance", "welfare"]
+            },
+            {
+                id: 26,
+                article: "Article 42",
+                title: "Provision for Just and Humane Conditions of Work",
+                category: "Directive Principles",
+                type: "directive",
+                description: "The State shall make provision for securing just and humane conditions of work and a decent standard of living.",
+                fullText: "The State shall endeavour to secure, by suitable legislation or economic and other means, just and humane conditions of work and a decent standard of living.",
+                status: "Active",
+                keywords: ["labour", "working conditions", "welfare", "living standards"]
+            },
+            {
+                id: 27,
+                article: "Article 43",
+                title: "Living Wage and Conditions of Labour",
+                category: "Directive Principles",
+                type: "directive",
+                description: "The State shall endeavour by suitable legislation or economic organization to secure a living wage for workers.",
+                fullText: "The State shall endeavour to secure, by suitable legislation or economic and other means, the right to a decent standard of living, including freedom from hunger and malnutrition.",
+                status: "Active",
+                keywords: ["minimum wage", "labour", "worker rights", "economy"]
+            },
+            {
+                id: 28,
+                article: "Article 44",
+                title: "Uniform Civil Code",
+                category: "Directive Principles",
+                type: "directive",
+                description: "The State shall endeavour to secure for the citizens a uniform civil code throughout the territory of India.",
+                fullText: "The State shall endeavour to secure for the citizens a uniform civil code throughout the territory of India.",
+                status: "Active",
+                keywords: ["civil code", "uniformity", "law", "citizens"]
+            },
+            {
+                id: 29,
+                article: "Article 45",
+                title: "Provision for Free and Compulsory Education",
+                category: "Directive Principles",
+                type: "directive",
+                description: "The State shall endeavour to provide free and compulsory education to all children.",
+                fullText: "The State shall endeavour to provide free and compulsory education to all children until they attain the age of fourteen years.",
+                status: "Active",
+                keywords: ["education", "children", "free education", "compulsory"]
+            },
+            {
+                id: 30,
+                article: "Article 48",
+                title: "Organization of Agriculture and Animal Husbandry",
+                category: "Directive Principles",
+                type: "directive",
+                description: "The State shall endeavour to organize agriculture and animal husbandry on modern and scientific lines.",
+                fullText: "The State shall endeavour to organize agriculture and animal husbandry on modern and scientific lines and shall, in particular, take steps for preserving and improving the breeds.",
+                status: "Active",
+                keywords: ["agriculture", "livestock", "farming", "rural"]
+            },
+            {
+                id: 31,
+                article: "Article 49",
+                title: "Protection of Monuments and Places of National Importance",
+                category: "Directive Principles",
+                type: "directive",
+                description: "It shall be the obligation of the State to protect every monument or place or object of artistic or historic interest.",
+                fullText: "It shall be the obligation of the State to protect every monument or place or object of artistic or historic interest declared by law to be of national importance.",
+                status: "Active",
+                keywords: ["heritage", "monuments", "national importance", "culture"]
+            },
+            {
+                id: 32,
+                article: "Article 50",
+                title: "Separation of Judiciary from Executive",
+                category: "Directive Principles",
+                type: "directive",
+                description: "The State shall take steps to separate the judiciary from the executive in the public services of the State.",
+                fullText: "The State shall take steps to separate the judiciary from the executive in the public services of the State.",
+                status: "Active",
+                keywords: ["separation of powers", "judiciary", "executive", "independence"]
+            },
+            {
+                id: 33,
+                article: "Article 53",
+                title: "Executive Power of the Union",
+                category: "Constitutional Structure",
+                type: "structure",
+                description: "The executive power of the Union shall be vested in the President and shall be exercised by him either directly or through officers subordinate to him.",
+                fullText: "The executive power of the Union shall be vested in the President and shall be exercised by him either directly or through officers subordinate to him in accordance with this Constitution.",
+                status: "Active",
+                keywords: ["executive", "president", "power", "union"]
+            },
+            {
+                id: 34,
+                article: "Article 74",
+                title: "Council of Ministers to Aid and Advise President",
+                category: "Constitutional Structure",
+                type: "structure",
+                description: "There shall be a Council of Ministers with the Prime Minister as the head to aid and advise the President.",
+                fullText: "There shall be a Council of Ministers with the Prime Minister at the head to aid and advise the President in the exercise of his functions.",
+                status: "Active",
+                keywords: ["council of ministers", "prime minister", "cabinet", "government"]
+            },
+            {
+                id: 35,
+                article: "Article 75",
+                title: "Other Provisions as to Ministers",
+                category: "Constitutional Structure",
+                type: "structure",
+                description: "Specifies the composition, oath, and qualifications of Ministers in the Union Government.",
+                fullText: "The Prime Minister shall be appointed by the President and the other Ministers shall be appointed by the President on the advice of the Prime Minister.",
+                status: "Active",
+                keywords: ["ministers", "appointment", "qualification", "prime minister"]
+            },
+            {
+                id: 36,
+                article: "Article 77",
+                title: "Conduct of Business of the Government of India",
+                category: "Constitutional Structure",
+                type: "structure",
+                description: "All executive action of the Government of India shall be expressed to be taken in the name of the President.",
+                fullText: "All executive action of the Government of India shall be expressed to be taken in the name of the President and in His name all executive power shall be exercised.",
+                status: "Active",
+                keywords: ["executive action", "government", "president", "administration"]
+            },
+            {
+                id: 37,
+                article: "Article 85",
+                title: "Summoning and Dissolution of Parliament",
+                category: "Constitutional Structure",
+                type: "structure",
+                description: "The President shall have the power to summon or prorogue either House of Parliament and to dissolve the Lok Sabha.",
+                fullText: "The President shall have the power to summon or prorogue either House of Parliament and to dissolve the Lok Sabha.",
+                status: "Active",
+                keywords: ["parliament", "session", "dissolution", "president"]
+            },
+            {
+                id: 38,
+                article: "Article 100",
+                title: "Voting in Houses, Power of Casting Vote of Presiding Officer",
+                category: "Constitutional Structure",
+                type: "structure",
+                description: "Except as otherwise provided by this Constitution, all questions at any sitting of either House shall be determined by a majority of votes of the members present and voting.",
+                fullText: "Save as otherwise provided in this Constitution, all questions at any sitting of either House or joint sitting shall be determined by a majority of votes of the members present and voting.",
+                status: "Active",
+                keywords: ["parliament", "voting", "majority", "procedure"]
+            },
+            {
+                id: 39,
+                article: "Article 123",
+                title: "Power of President to Promulgate Ordinances",
+                category: "Constitutional Structure",
+                type: "structure",
+                description: "The President may promulgate ordinances when Parliament is not in session to meet urgent legislative needs.",
+                fullText: "If at any time, except when both Houses of Parliament are in session, it appears to the President that circumstances exist which render it necessary to take immediate action.",
+                status: "Active",
+                keywords: ["ordinance", "president", "legislation", "emergency"]
+            },
+            {
+                id: 40,
+                article: "Article 131",
+                title: "Original Jurisdiction of Supreme Court",
+                category: "Constitutional Structure",
+                type: "structure",
+                description: "The Supreme Court shall have original jurisdiction in any dispute between the Government of India and States or between States.",
+                fullText: "Subject to the provisions of this Constitution, the Supreme Court shall have original jurisdiction in any dispute between the Government of India and one or more States or between two or more States.",
+                status: "Active",
+                keywords: ["supreme court", "original jurisdiction", "dispute", "states"]
+            },
+            {
+                id: 41,
+                article: "Article 134",
+                title: "Certificate for Appeal to the Supreme Court",
+                category: "Constitutional Structure",
+                type: "structure",
+                description: "An appeal shall lie to the Supreme Court from any judgment, decree or final order of the High Court if the High Court certifies that the case involves a substantial question of law.",
+                fullText: "An appeal shall lie to the Supreme Court from any judgment, decree or final order in a civil case if the High Court certifies that the case involves a substantial question of law as to the interpretation.",
+                status: "Active",
+                keywords: ["supreme court", "appeal", "high court", "jurisdiction"]
+            },
+            {
+                id: 42,
+                article: "Article 137",
+                title: "Review of Judgments by the Supreme Court",
+                category: "Constitutional Structure",
+                type: "structure",
+                description: "Subject to the provisions of any law made by Parliament or rules made under Article 145, the Supreme Court shall have power to review any judgment.",
+                fullText: "Subject to the provisions of any law made by Parliament or rules made under Article 145, the Supreme Court shall have power to review any judgment pronounced or order made by it.",
+                status: "Active",
+                keywords: ["review", "supreme court", "judgment", "reconsideration"]
+            },
+            {
+                id: 43,
+                article: "Article 141",
+                title: "Law Declared by Supreme Court to be Binding",
+                category: "Constitutional Structure",
+                type: "structure",
+                description: "The law declared by the Supreme Court shall be binding on all courts within the territory of India.",
+                fullText: "The law declared by the Supreme Court shall be binding on all courts within the territory of India.",
+                status: "Active",
+                keywords: ["supreme court", "precedent", "binding", "law"]
+            },
+            {
+                id: 44,
+                article: "Article 155",
+                title: "Governor of a State",
+                category: "Constitutional Structure",
+                type: "structure",
+                description: "There shall be a Governor for each State appointed by the President to hold office during the pleasure of the President.",
+                fullText: "There shall be a Governor for each State appointed by the President by warrant under his hand and seal.",
+                status: "Active",
+                keywords: ["governor", "state", "executive", "appointment"]
+            },
+            {
+                id: 45,
+                article: "Article 168",
+                title: "Constitution of State Legislatures",
+                category: "Constitutional Structure",
+                type: "structure",
+                description: "For each State there shall be a Legislature which shall consist of the Governor and one or two Houses of the Legislature of the State.",
+                fullText: "For each State there shall be a Legislature which shall consist of the Governor and, subject to the provisions of this Constitution, one or two Houses.",
+                status: "Active",
+                keywords: ["state legislature", "assembly", "governor", "state government"]
+            },
+            {
+                id: 46,
+                article: "Article 226",
+                title: "Power of High Courts to Issue Certain Writs",
+                category: "Constitutional Structure",
+                type: "structure",
+                description: "Every High Court shall have powers, throughout the territories in relation to which it exercises jurisdiction, to issue to any person or authority directions, orders or writs.",
+                fullText: "Every High Court shall have powers throughout the territories in relation to which it exercises jurisdiction, to issue to any person or authority directions, orders or writs, including writs in the nature of habeas corpus, mandamus, prohibition, quo warranto and certiorari.",
+                status: "Active",
+                keywords: ["high court", "writs", "habeas corpus", "mandamus", "jurisdiction"]
+            },
+            {
+                id: 47,
+                article: "Article 245",
+                title: "Extent of Laws Made by Parliament and by the Legislatures of States",
+                category: "Constitutional Structure",
+                type: "structure",
+                description: "Parliament may make laws for the whole or any part of the territory of India, and the Legislature of a State may make laws for the whole or any part of the State.",
+                fullText: "Parliament may make laws for the whole or any part of the territory of India, and the Legislature of a State may make laws for the whole or any part of the State.",
+                status: "Active",
+                keywords: ["legislation", "parliament", "state legislature", "jurisdiction"]
+            },
+            {
+                id: 48,
+                article: "Article 356",
+                title: "Provisions in Case of Failure of Constitutional Machinery in States",
+                category: "Constitutional Structure",
+                type: "structure",
+                description: "If the President is satisfied that the Government of a State cannot be carried on in accordance with the Constitution, he may assume executive power.",
+                fullText: "If the President, on receipt of a report from the Governor of a State or otherwise, is satisfied that a situation has arisen in which the Government of the State cannot be carried on in accordance with the provisions of the Constitution.",
+                status: "Active",
+                keywords: ["president rule", "emergency", "state government", "dissolution"]
+            },
+            {
+                id: 49,
+                article: "Article 370",
+                title: "Temporary Provisions with Respect to Jammu and Kashmir",
+                category: "Constitutional Structure",
+                type: "structure",
+                description: "Granted special status and autonomous powers to Jammu and Kashmir to frame its own Constitution.",
+                fullText: "Notwithstanding anything in this Constitution, the following provisions shall apply in relation to the State of Jammu and Kashmir.",
+                status: "Modified",
+                keywords: ["jammu", "kashmir", "special status", "autonomy"]
+            },
+            {
+                id: 50,
+                article: "Amendment I",
+                title: "1st Amendment (1951)",
+                category: "Amendments",
+                type: "amendments",
+                description: "Added restrictions to Articles 14 and 19 and modified Articles 15 and 19 to include state restrictions on fundamental rights.",
+                fullText: "The First Amendment added Articles 31A and 31B to the Constitution, dealing with agrarian reform and validating certain state acts.",
+                status: "Active",
+                keywords: ["1951", "amendment", "agrarian reform", "fundamental rights"]
+            },
+            {
+                id: 51,
+                article: "Amendment XXVI",
+                title: "26th Amendment (1971)",
+                category: "Amendments",
+                type: "amendments",
+                description: "Reduced the privy purses of Indian princes and abolished their special privileges and titles.",
+                fullText: "The 26th Amendment curtailed the powers of Indian princes by reducing their privy purses and abolishing their special privileges.",
+                status: "Active",
+                keywords: ["1971", "amendment", "privy purse", "princes"]
+            },
+            {
+                id: 52,
+                article: "Amendment LXI",
+                title: "61st Amendment (1988)",
+                category: "Amendments",
+                type: "amendments",
+                description: "Lowered the voting age from 21 years to 18 years, making youth a crucial part of the democratic process.",
+                fullText: "The 61st Amendment reduced the minimum age for voting in elections from 21 years to 18 years.",
+                status: "Active",
+                keywords: ["1988", "amendment", "voting age", "youth", "democracy"]
+            },
+            {
+                id: 53,
+                article: "Amendment LXXIII",
+                title: "73rd Amendment (1992)",
+                category: "Amendments",
+                type: "amendments",
+                description: "Granted constitutional status to Panchayats and established provisions for self-government at the grassroots level.",
+                fullText: "The 73rd Amendment added Part IX to the Constitution, establishing the constitutional framework for Panchayati Raj institutions.",
+                status: "Active",
+                keywords: ["1992", "amendment", "panchayat", "local government", "grassroots"]
+            },
+            {
+                id: 54,
+                article: "Amendment LXXIV",
+                title: "74th Amendment (1992)",
+                category: "Amendments",
+                type: "amendments",
+                description: "Granted constitutional status to Municipal Corporations and established provisions for self-government in urban areas.",
+                fullText: "The 74th Amendment added Part IXA to the Constitution, establishing the constitutional framework for Municipal self-government.",
+                status: "Active",
+                keywords: ["1992", "amendment", "municipal", "urban local government", "cities"]
+            }
+        ];
+
+        let filteredLaws = [...constitutionalLaws];
+        let currentFilter = 'all';
+
+        // Render laws
+        function renderLaws(laws) {
+            const lawsGrid = document.getElementById('lawsGrid');
+            lawsGrid.innerHTML = '';
+
+            if (laws.length === 0) {
+                lawsGrid.innerHTML = `
+                    <div class="no-results" style="grid-column: 1/-1;">
+                        <h2>No Results Found</h2>
+                        <p>Try adjusting your search or filters</p>
+                    </div>
+                `;
+                return;
+            }
+
+            laws.forEach((law, index) => {
+                const card = document.createElement('div');
+                card.className = 'law-card';
+                card.style.animationDelay = `${index * 0.1}s`;
+                card.innerHTML = `
+                    <div class="law-header">
+                        <div class="law-number">${law.article}</div>
+                        <div class="law-title">${law.title}</div>
+                    </div>
+                    <div class="law-content">
+                        <div class="law-category">${law.category}</div>
+                        <p class="law-description">${law.description}</p>
+                        <div class="law-footer">
+                            <div class="law-status">
+                                <span class="status-dot"></span>
+                                <span>${law.status}</span>
+                            </div>
+                            <a class="read-more" onclick="openModal(${law.id})">Read More →</a>
+                        </div>
+                    </div>
+                `;
+                lawsGrid.appendChild(card);
+            });
+        }
+
+        // Filter Laws
+        function filterLaws(type) {
+            currentFilter = type;
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            if (type === 'all') {
+                filteredLaws = [...constitutionalLaws];
+            } else {
+                filteredLaws = constitutionalLaws.filter(law => law.type === type);
+            }
+            renderLaws(filteredLaws);
+        }
+
+        // Search Laws
+        function handleSearch() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            
+            if (!searchTerm.trim()) {
+                filterLaws(currentFilter);
+                return;
+            }
+
+            const results = constitutionalLaws.filter(law =>
+                law.article.toLowerCase().includes(searchTerm) ||
+                law.title.toLowerCase().includes(searchTerm) ||
+                law.description.toLowerCase().includes(searchTerm) ||
+                law.keywords.some(keyword => keyword.includes(searchTerm))
+            );
+
+            renderLaws(results);
+        }
+
+        // Real-time search
+        document.getElementById('searchInput')?.addEventListener('keyup', function(e) {
+            if (e.key === 'Enter') {
+                handleSearch();
+            } else if (this.value.length === 0) {
+                renderLaws(filteredLaws);
+            } else {
+                handleSearch();
+            }
+        });
+
+        // Modal Functions
+        function openModal(id) {
+            const law = constitutionalLaws.find(l => l.id === id);
+            if (law) {
+                document.getElementById('modalTitle').textContent = `${law.article}: ${law.title}`;
+                document.getElementById('modalBody').innerHTML = `
+                    <h3>Category: ${law.category}</h3>
+                    <p><strong>Article Number:</strong> ${law.article}</p>
+                    <p><strong>Status:</strong> ${law.status}</p>
+                    
+                    <h3>Description</h3>
+                    <p>${law.description}</p>
+                    
+                    <h3>Full Text</h3>
+                    <p>"${law.fullText}"</p>
+                    
+                    <h3>Key Terms</h3>
+                    <p>${law.keywords.map(k => `<strong>${k}</strong>`).join(', ')}</p>
+                `;
+                document.getElementById('lawModal').classList.add('active');
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('lawModal').classList.remove('active');
+        }
+
+        // Close modal on outside click
+        window.onclick = function(event) {
+            const modal = document.getElementById('lawModal');
+            if (event.target === modal) {
+                modal.classList.remove('active');
+            }
+        }
+
+        // Initial render
+        renderLaws(filteredLaws);
+    </script>
+</body>
+</html>
