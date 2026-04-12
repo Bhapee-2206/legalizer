@@ -1,0 +1,44 @@
+[
+  {
+    "article": "Article 14",
+    "title": "Equality before law",
+    "description": "The State shall not deny to any person equality before the law or the equal protection of the laws within the territory of India.",
+    "category": "Fundamental Rights",
+    "tags": ["Equality", "Rights", "State"]
+  },
+  {
+    "article": "Article 19(1)(a)",
+    "title": "Freedom of Speech and Expression",
+    "description": "All citizens shall have the right to freedom of speech and expression.",
+    "category": "Fundamental Rights",
+    "tags": ["Speech", "Expression", "Press"]
+  },
+  {
+    "article": "Article 21",
+    "title": "Protection of Life and Personal Liberty",
+    "description": "No person shall be deprived of his life or personal liberty except according to procedure established by law.",
+    "category": "Fundamental Rights",
+    "tags": ["Life", "Liberty", "Arrest"]
+  },
+  {
+    "article": "Article 32",
+    "title": "Remedies for enforcement of rights",
+    "description": "The right to move the Supreme Court by appropriate proceedings for the enforcement of the rights conferred by this Part is guaranteed.",
+    "category": "Constitutional Remedies",
+    "tags": ["Supreme Court", "Writs", "Enforcement"]
+  },
+  {
+    "article": "Article 44",
+    "title": "Uniform Civil Code for the citizens",
+    "description": "The State shall endeavour to secure for the citizens a uniform civil code throughout the territory of India.",
+    "category": "Directive Principles",
+    "tags": ["Civil Code", "Marriage", "Succession"]
+  },
+  {
+    "article": "Article 39A",
+    "title": "Equal justice and free legal aid",
+    "description": "The State shall secure that the operation of the legal system promotes justice, on a basis of equal opportunity, and shall, in particular, provide free legal aid...",
+    "category": "Directive Principles",
+    "tags": ["Justice", "Legal Aid"]
+  }
+]

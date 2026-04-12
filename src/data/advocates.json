@@ -1,0 +1,47 @@
+[
+  {
+    "id": "adv_1",
+    "name": "Adv. Rajesh Sharma",
+    "specialization": "Criminal Law",
+    "rating": 4.9,
+    "experience": "15+ Years",
+    "location": "New Delhi",
+    "successRate": "92%"
+  },
+  {
+    "id": "adv_2",
+    "name": "Adv. Meera Iyer",
+    "specialization": "Property & Real Estate",
+    "rating": 4.8,
+    "experience": "12+ Years",
+    "location": "Mumbai",
+    "successRate": "88%"
+  },
+  {
+    "id": "adv_3",
+    "name": "Adv. Vikram Sethi",
+    "specialization": "Corporate Law",
+    "rating": 4.9,
+    "experience": "20+ Years",
+    "location": "Bangalore",
+    "successRate": "95%"
+  },
+  {
+    "id": "adv_4",
+    "name": "Adv. Ananya Das",
+    "specialization": "Family & Divorce",
+    "rating": 4.7,
+    "experience": "8+ Years",
+    "location": "Kolkata",
+    "successRate": "85%"
+  },
+  {
+    "id": "adv_5",
+    "name": "Adv. Karthik Raja",
+    "specialization": "Constitutional Law",
+    "rating": 5.0,
+    "experience": "18+ Years",
+    "location": "Chennai",
+    "successRate": "98%"
+  }
+]
