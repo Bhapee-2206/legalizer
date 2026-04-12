@@ -16,9 +16,9 @@ export default function Dashboard() {
   if (!role) {
     return (
       <main style={{ padding: '120px 5%', textAlign: 'center' }}>
-        <h2>Please Log In</h2>
-        <p>You need to be logged in to view the dashboard.</p>
-        <Link href="/login" className="btn-primary" style={{ marginTop: '1.5rem', display: 'inline-block', textDecoration: 'none' }}>Go to Login</Link>
+        <h2>Please Sign In</h2>
+        <p>You need to be signed in to view the dashboard.</p>
+        <Link href="/signin" className="btn-primary" style={{ marginTop: '1.5rem', display: 'inline-block', textDecoration: 'none' }}>Go to Sign In</Link>
       </main>
     );
   }

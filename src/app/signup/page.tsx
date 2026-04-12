@@ -4,9 +4,8 @@ import { useSimulation } from '@/context/SimulationContext';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
-export default function LoginPage() {
+export default function SignUpPage() {
   const [activeTab, setActiveTab] = useState<'Client' | 'Advocate'>('Client');
-  const [isLogin, setIsLogin] = useState(false);
   const [form, setForm] = useState({ name: '', email: '', password: '', barcode: '' });
   const [errorMsg, setErrorMsg] = useState('');
   const [loading, setLoading] = useState(false);
@@ -18,33 +17,26 @@ export default function LoginPage() {
     setErrorMsg('');
     setLoading(true);
 
-    const endpoint = isLogin ? '/api/auth/login' : '/api/auth/register';
-    const payload = isLogin 
-      ? { email: form.email, password: form.password }
-      : { 
+    try {
+      const res = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
           name: form.name, 
           email: form.email, 
           password: form.password, 
           role: activeTab, 
           barcode: form.barcode 
-        };
-
-    try {
-      const res = await fetch(endpoint, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
+        })
       });
 
       const data = await res.json();
 
       if (!res.ok) {
-        throw new Error(data.error || 'Authentication failed');
+        throw new Error(data.error || 'Registration failed');
       }
 
-      // Sync the real DB user with the frontend context
-      if (data.user.role === 'Advocate' && !isLogin && !data.user.isVerified) {
-        // Special case: Advocate registering, they go into pending state
+      if (data.user.role === 'Advocate' && !data.user.isVerified) {
         requestAdvocateVerification({
           name: data.user.name,
           email: data.user.email,
@@ -68,8 +60,8 @@ export default function LoginPage() {
       <div className="glass-panel animate-fade-in" style={{ maxWidth: '450px', width: '100%', padding: '3rem', backgroundColor: 'var(--bg-primary)' }}>
         
         <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
-          <h1 style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>Access Legalizer</h1>
-          <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>Secure {isLogin ? 'Login' : 'Registration'} for Legal Entities.</p>
+          <h1 style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>Create Account</h1>
+          <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>Secure Registration for Legal Entities.</p>
         </div>
 
         <div style={{ display: 'flex', background: 'var(--bg-tertiary)', padding: '4px', borderRadius: '12px', marginBottom: '2rem' }}>
@@ -104,12 +96,10 @@ export default function LoginPage() {
         )}
 
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.2rem' }}>
-          {!isLogin && (
-            <div>
-              <label style={{ display: 'block', fontSize: '0.85rem', marginBottom: '0.5rem', fontWeight: 600 }}>Full Name</label>
-              <input required className="input-elegant" placeholder="John Doe" value={form.name} onChange={e => setForm({...form, name: e.target.value})} />
-            </div>
-          )}
+          <div>
+            <label style={{ display: 'block', fontSize: '0.85rem', marginBottom: '0.5rem', fontWeight: 600 }}>Full Name</label>
+            <input required className="input-elegant" placeholder="John Doe" value={form.name} onChange={e => setForm({...form, name: e.target.value})} />
+          </div>
           
           <div>
             <label style={{ display: 'block', fontSize: '0.85rem', marginBottom: '0.5rem', fontWeight: 600 }}>Email Address</label>
@@ -121,7 +111,7 @@ export default function LoginPage() {
             <input required type="password" className="input-elegant" placeholder="••••••••" value={form.password} onChange={e => setForm({...form, password: e.target.value})} />
           </div>
 
-          {!isLogin && activeTab === 'Advocate' && (
+          {activeTab === 'Advocate' && (
             <div>
               <label style={{ display: 'block', fontSize: '0.85rem', marginBottom: '0.5rem', fontWeight: 600 }}>Court Barcode Number</label>
               <input required className="input-elegant" placeholder="BC-IND-12345" value={form.barcode} onChange={e => setForm({...form, barcode: e.target.value})} />
@@ -129,10 +119,10 @@ export default function LoginPage() {
           )}
           
           <button type="submit" disabled={loading} className={activeTab === 'Client' ? "btn-primary" : "btn-gold"} style={{ width: '100%', padding: '15px', marginTop: '1rem', opacity: loading ? 0.7 : 1 }}>
-            {loading ? 'Processing...' : (isLogin ? 'Secure Login' : `Create ${activeTab} Account`)}
+            {loading ? 'Processing...' : `Create ${activeTab} Account`}
           </button>
           
-          {!isLogin && activeTab === 'Advocate' && (
+          {activeTab === 'Advocate' && (
             <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textAlign: 'center' }}>
               Advocate accounts require Admin approval based on the provided barcode.
             </p>
@@ -140,10 +130,9 @@ export default function LoginPage() {
         </form>
 
         <div style={{ marginTop: '2rem', textAlign: 'center', borderTop: '1px solid var(--border-light)', paddingTop: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-          <button onClick={() => setIsLogin(!isLogin)} style={{ background: 'transparent', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer', fontWeight: 600 }}>
-            {isLogin ? "Don't have an account? Register" : "Already have an account? Login"}
-          </button>
-          <Link href="/admin-login" style={{ fontSize: '0.85rem', color: 'var(--text-muted)', textDecoration: 'none' }}>Admin Access</Link>
+          <Link href="/signin" style={{ textDecoration: 'none', color: 'var(--text-secondary)', fontWeight: 600 }}>
+            Already have an account? Sign In
+          </Link>
         </div>
 
       </div>

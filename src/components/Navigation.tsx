@@ -113,17 +113,23 @@ export default function Navigation() {
             }}>Logout</button>
           </div>
         ) : (
-          <Link href="/login" style={{ textDecoration: 'none' }}>
-            <button style={{
-              background: 'var(--accent-navy)',
-              color: 'white',
-              border: 'none',
-              padding: '8px 20px',
-              borderRadius: 'var(--radius-sm)',
-              fontWeight: 600,
-              cursor: 'pointer'
-            }}>Login</button>
-          </Link>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1.2rem' }}>
+            <Link href="/signin" style={{ textDecoration: 'none', color: 'var(--text-primary)', fontWeight: 600, fontSize: '0.9rem' }}>
+              Sign In
+            </Link>
+            <Link href="/signup" style={{ textDecoration: 'none' }}>
+              <button style={{
+                background: 'var(--accent-navy)',
+                color: 'white',
+                border: 'none',
+                padding: '8px 20px',
+                borderRadius: 'var(--radius-sm)',
+                fontWeight: 600,
+                cursor: 'pointer',
+                fontSize: '0.9rem'
+              }}>Sign Up</button>
+            </Link>
+          </div>
         )}
       </nav>
     </header>
