@@ -6,24 +6,60 @@ import Link from 'next/link';
 
 export default function LoginPage() {
   const [activeTab, setActiveTab] = useState<'Client' | 'Advocate'>('Client');
-  const [form, setForm] = useState({ name: '', email: '', barcode: '' });
+  const [isLogin, setIsLogin] = useState(false);
+  const [form, setForm] = useState({ name: '', email: '', password: '', barcode: '' });
+  const [errorMsg, setErrorMsg] = useState('');
+  const [loading, setLoading] = useState(false);
   const { login, requestAdvocateVerification } = useSimulation();
   const router = useRouter();
 
-  const handleClientSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    login('Client', { name: form.name, email: form.email });
-    router.push('/dashboard');
-  };
+    setErrorMsg('');
+    setLoading(true);
 
-  const handleAdvocateSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    requestAdvocateVerification({
-      name: form.name,
-      email: form.email,
-      barcode: form.barcode
-    });
-    router.push('/dashboard');
+    const endpoint = isLogin ? '/api/auth/login' : '/api/auth/register';
+    const payload = isLogin 
+      ? { email: form.email, password: form.password }
+      : { 
+          name: form.name, 
+          email: form.email, 
+          password: form.password, 
+          role: activeTab, 
+          barcode: form.barcode 
+        };
+
+    try {
+      const res = await fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error || 'Authentication failed');
+      }
+
+      // Sync the real DB user with the frontend context
+      if (data.user.role === 'Advocate' && !isLogin && !data.user.isVerified) {
+        // Special case: Advocate registering, they go into pending state
+        requestAdvocateVerification({
+          name: data.user.name,
+          email: data.user.email,
+          barcode: data.user.barcode
+        });
+      } else {
+        login(data.user.role, data.user);
+      }
+      
+      router.push('/dashboard');
+    } catch (err: any) {
+      setErrorMsg(err.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -33,16 +69,16 @@ export default function LoginPage() {
         
         <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
           <h1 style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>Access Legalizer</h1>
-          <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>Choose your account type to continue.</p>
+          <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>Secure {isLogin ? 'Login' : 'Registration'} for Legal Entities.</p>
         </div>
 
-        <div style={{ display: 'flex', background: 'var(--bg-tertiary)', padding: '4px', borderRadius: '12px', marginBottom: '2.5rem' }}>
+        <div style={{ display: 'flex', background: 'var(--bg-tertiary)', padding: '4px', borderRadius: '12px', marginBottom: '2rem' }}>
           {(['Client', 'Advocate'] as const).map(tab => (
             <button 
               key={tab}
               onClick={() => {
                 setActiveTab(tab);
-                setForm({ name: '', email: '', barcode: '' });
+                setErrorMsg('');
               }}
               style={{
                 flex: 1,
@@ -61,50 +97,52 @@ export default function LoginPage() {
           ))}
         </div>
 
-        {activeTab === 'Client' ? (
-          <form onSubmit={handleClientSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.2rem' }}>
+        {errorMsg && (
+          <div style={{ padding: '10px', background: '#fee2e2', color: '#ef4444', borderRadius: '8px', fontSize: '0.85rem', marginBottom: '1.5rem', textAlign: 'center' }}>
+            {errorMsg}
+          </div>
+        )}
+
+        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.2rem' }}>
+          {!isLogin && (
             <div>
               <label style={{ display: 'block', fontSize: '0.85rem', marginBottom: '0.5rem', fontWeight: 600 }}>Full Name</label>
               <input required className="input-elegant" placeholder="John Doe" value={form.name} onChange={e => setForm({...form, name: e.target.value})} />
             </div>
-            <div>
-              <label style={{ display: 'block', fontSize: '0.85rem', marginBottom: '0.5rem', fontWeight: 600 }}>Email Address</label>
-              <input required type="email" className="input-elegant" placeholder="john@email.com" value={form.email} onChange={e => setForm({...form, email: e.target.value})} />
-            </div>
-            <div>
-              <label style={{ display: 'block', fontSize: '0.85rem', marginBottom: '0.5rem', fontWeight: 600 }}>Password</label>
-              <input required type="password" className="input-elegant" placeholder="••••••••" />
-            </div>
-            
-            <button type="submit" className="btn-primary" style={{ width: '100%', padding: '15px', marginTop: '1rem' }}>
-              Create Client Account
-            </button>
-          </form>
-        ) : (
-          <form onSubmit={handleAdvocateSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.2rem' }}>
-            <div>
-              <label style={{ display: 'block', fontSize: '0.85rem', marginBottom: '0.5rem', fontWeight: 600 }}>Full Name</label>
-              <input required className="input-elegant" placeholder="John Doe" value={form.name} onChange={e => setForm({...form, name: e.target.value})} />
-            </div>
-            <div>
-              <label style={{ display: 'block', fontSize: '0.85rem', marginBottom: '0.5rem', fontWeight: 600 }}>Gmail Address</label>
-              <input required type="email" className="input-elegant" placeholder="john@gmail.com" value={form.email} onChange={e => setForm({...form, email: e.target.value})} />
-            </div>
+          )}
+          
+          <div>
+            <label style={{ display: 'block', fontSize: '0.85rem', marginBottom: '0.5rem', fontWeight: 600 }}>Email Address</label>
+            <input required type="email" className="input-elegant" placeholder="name@domain.com" value={form.email} onChange={e => setForm({...form, email: e.target.value})} />
+          </div>
+          
+          <div>
+            <label style={{ display: 'block', fontSize: '0.85rem', marginBottom: '0.5rem', fontWeight: 600 }}>Password</label>
+            <input required type="password" className="input-elegant" placeholder="••••••••" value={form.password} onChange={e => setForm({...form, password: e.target.value})} />
+          </div>
+
+          {!isLogin && activeTab === 'Advocate' && (
             <div>
               <label style={{ display: 'block', fontSize: '0.85rem', marginBottom: '0.5rem', fontWeight: 600 }}>Court Barcode Number</label>
               <input required className="input-elegant" placeholder="BC-IND-12345" value={form.barcode} onChange={e => setForm({...form, barcode: e.target.value})} />
             </div>
-            
-            <button type="submit" className="btn-gold" style={{ width: '100%', padding: '15px', marginTop: '1rem' }}>
-              Submit for Verification
-            </button>
+          )}
+          
+          <button type="submit" disabled={loading} className={activeTab === 'Client' ? "btn-primary" : "btn-gold"} style={{ width: '100%', padding: '15px', marginTop: '1rem', opacity: loading ? 0.7 : 1 }}>
+            {loading ? 'Processing...' : (isLogin ? 'Secure Login' : `Create ${activeTab} Account`)}
+          </button>
+          
+          {!isLogin && activeTab === 'Advocate' && (
             <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textAlign: 'center' }}>
               Advocate accounts require Admin approval based on the provided barcode.
             </p>
-          </form>
-        )}
+          )}
+        </form>
 
-        <div style={{ marginTop: '2rem', textAlign: 'center', borderTop: '1px solid var(--border-light)', paddingTop: '1.5rem' }}>
+        <div style={{ marginTop: '2rem', textAlign: 'center', borderTop: '1px solid var(--border-light)', paddingTop: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+          <button onClick={() => setIsLogin(!isLogin)} style={{ background: 'transparent', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer', fontWeight: 600 }}>
+            {isLogin ? "Don't have an account? Register" : "Already have an account? Login"}
+          </button>
           <Link href="/admin-login" style={{ fontSize: '0.85rem', color: 'var(--text-muted)', textDecoration: 'none' }}>Admin Access</Link>
         </div>
 
