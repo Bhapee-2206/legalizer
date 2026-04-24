@@ -6,7 +6,7 @@ import Link from 'next/link';
 
 export default function SignUpPage() {
   const [activeTab, setActiveTab] = useState<'Client' | 'Advocate'>('Client');
-  const [form, setForm] = useState({ name: '', email: '', password: '', barcode: '' });
+  const [form, setForm] = useState({ name: '', email: '', password: '', barcode: '', specialization: '', location: '', experience: '' });
   const [errorMsg, setErrorMsg] = useState('');
   const [loading, setLoading] = useState(false);
   const { login, requestAdvocateVerification } = useSimulation();
@@ -21,13 +21,16 @@ export default function SignUpPage() {
       const res = await fetch('/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-          name: form.name, 
-          email: form.email, 
-          password: form.password, 
-          role: activeTab, 
-          barcode: form.barcode 
-        })
+          body: JSON.stringify({ 
+            name: form.name, 
+            email: form.email, 
+            password: form.password, 
+            role: activeTab, 
+            barcode: form.barcode,
+            specialization: form.specialization,
+            location: form.location,
+            experience: form.experience
+          })
       });
 
       const data = await res.json();
@@ -36,16 +39,7 @@ export default function SignUpPage() {
         throw new Error(data.error || 'Registration failed');
       }
 
-      if (data.user.role === 'Advocate' && !data.user.isVerified) {
-        requestAdvocateVerification({
-          name: data.user.name,
-          email: data.user.email,
-          barcode: data.user.barcode
-        });
-      } else {
-        login(data.user.role, data.user);
-      }
-      
+      login(data.user.role, data.user);      
       router.push('/dashboard');
     } catch (err: any) {
       setErrorMsg(err.message);
@@ -55,13 +49,13 @@ export default function SignUpPage() {
   };
 
   return (
-    <main style={{ padding: '120px 5% 4rem 5%', display: 'flex', justifyContent: 'center', backgroundColor: 'var(--bg-secondary)', minHeight: '100vh' }}>
+    <main style={{ padding: '100px 5% 4rem 5%', display: 'flex', justifyContent: 'center', backgroundColor: 'var(--bg-secondary)', minHeight: '100vh' }}>
       
-      <div className="glass-panel animate-fade-in" style={{ maxWidth: '450px', width: '100%', padding: '3rem', backgroundColor: 'var(--bg-primary)' }}>
+      <div className="glass-panel animate-fade-in" style={{ maxWidth: '450px', width: '100%', padding: '2rem 1.5rem', backgroundColor: 'var(--bg-primary)' }}>
         
-        <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
-          <h1 style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>Create Account</h1>
-          <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>Secure Registration for Legal Entities.</p>
+        <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
+          <h1 style={{ fontSize: 'clamp(1.5rem, 5vw, 2rem)', marginBottom: '0.5rem' }}>Create Account</h1>
+          <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem' }}>Secure Registration for Legal Entities.</p>
         </div>
 
         <div style={{ display: 'flex', background: 'var(--bg-tertiary)', padding: '4px', borderRadius: '12px', marginBottom: '2rem' }}>
@@ -112,10 +106,26 @@ export default function SignUpPage() {
           </div>
 
           {activeTab === 'Advocate' && (
-            <div>
-              <label style={{ display: 'block', fontSize: '0.85rem', marginBottom: '0.5rem', fontWeight: 600 }}>Court Barcode Number</label>
-              <input required className="input-elegant" placeholder="BC-IND-12345" value={form.barcode} onChange={e => setForm({...form, barcode: e.target.value})} />
-            </div>
+            <>
+              <div>
+                <label style={{ display: 'block', fontSize: '0.85rem', marginBottom: '0.5rem', fontWeight: 600 }}>Specialization</label>
+                <input required className="input-elegant" placeholder="e.g. Criminal Law, Corporate Law" value={form.specialization} onChange={e => setForm({...form, specialization: e.target.value})} />
+              </div>
+              <div style={{ display: 'flex', gap: '1rem' }}>
+                <div style={{ flex: 1 }}>
+                  <label style={{ display: 'block', fontSize: '0.85rem', marginBottom: '0.5rem', fontWeight: 600 }}>Location</label>
+                  <input required className="input-elegant" placeholder="e.g. New Delhi" value={form.location} onChange={e => setForm({...form, location: e.target.value})} />
+                </div>
+                <div style={{ flex: 1 }}>
+                  <label style={{ display: 'block', fontSize: '0.85rem', marginBottom: '0.5rem', fontWeight: 600 }}>Experience</label>
+                  <input required className="input-elegant" placeholder="e.g. 15+ Years" value={form.experience} onChange={e => setForm({...form, experience: e.target.value})} />
+                </div>
+              </div>
+              <div>
+                <label style={{ display: 'block', fontSize: '0.85rem', marginBottom: '0.5rem', fontWeight: 600 }}>Court Barcode Number</label>
+                <input required className="input-elegant" placeholder="BC-IND-12345" value={form.barcode} onChange={e => setForm({...form, barcode: e.target.value})} />
+              </div>
+            </>
           )}
           
           <button type="submit" disabled={loading} className={activeTab === 'Client' ? "btn-primary" : "btn-gold"} style={{ width: '100%', padding: '15px', marginTop: '1rem', opacity: loading ? 0.7 : 1 }}>

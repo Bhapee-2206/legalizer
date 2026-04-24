@@ -8,19 +8,19 @@ export default function TemplatesPage() {
   const { activeCase } = useSimulation();
 
   return (
-    <main style={{ padding: '40px 5% 4rem 5%', backgroundColor: 'var(--bg-secondary)', minHeight: '100vh' }}>
+    <main style={{ padding: '80px 5% 4rem 5%', backgroundColor: 'var(--bg-secondary)', minHeight: '100vh' }}>
       
-      <div className="animate-fade-in" style={{ marginBottom: '4rem', textAlign: 'center' }}>
-        <div style={{ display: 'inline-block', padding: '8px 20px', background: 'rgba(206, 176, 112, 0.1)', color: 'var(--accent-gold-dark)', borderRadius: '20px', fontSize: '0.8rem', fontWeight: 700, letterSpacing: '0.1em', marginBottom: '1.5rem', textTransform: 'uppercase' }}>
+      <div className="animate-fade-in" style={{ marginBottom: '3rem', textAlign: 'center' }}>
+        <div style={{ display: 'inline-block', padding: '8px 20px', background: 'rgba(206, 176, 112, 0.1)', color: 'var(--accent-gold-dark)', borderRadius: '20px', fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.1em', marginBottom: '1.25rem', textTransform: 'uppercase' }}>
           Document Marketplace
         </div>
-        <h1 style={{ fontSize: '3.5rem', marginBottom: '1rem', letterSpacing: '-0.04em' }}>Legal <span style={{ color: 'var(--accent-gold)' }}>Blueprints.</span></h1>
-        <p style={{ color: 'var(--text-secondary)', fontSize: '1.2rem', maxWidth: '700px', margin: '0 auto' }}>
+        <h1 style={{ fontSize: 'clamp(2rem, 8vw, 3.5rem)', marginBottom: '1rem', letterSpacing: '-0.04em' }}>Legal <span style={{ color: 'var(--accent-gold)' }}>Blueprints.</span></h1>
+        <p style={{ color: 'var(--text-secondary)', fontSize: 'clamp(1rem, 3vw, 1.2rem)', maxWidth: '700px', margin: '0 auto' }}>
           Browse our collection of court-ready legal templates, meticulously drafted by legal experts for compliance and clarity.
         </p>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', gap: '2rem', maxWidth: '1200px', margin: '0 auto' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem', maxWidth: '1200px', margin: '0 auto' }}>
         {Object.entries(localTemplates).map(([key, template]: [string, any]) => (
           <div key={key} className="glass-panel animate-fade-in" style={{ padding: '2.5rem', backgroundColor: 'var(--bg-primary)', display: 'flex', flexDirection: 'column', height: '100%' }}>
             <div style={{ fontSize: '2rem', marginBottom: '1.5rem' }}>
@@ -30,8 +30,8 @@ export default function TemplatesPage() {
               {key === 'Corporate Contract' && '🏢'}
               {key === 'Default' && '📝'}
             </div>
-            <h3 style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>{key}</h3>
-            <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', lineHeight: 1.6, marginBottom: '2rem', flex: 1 }}>
+            <h3 style={{ fontSize: '1.3rem', marginBottom: '0.75rem' }}>{key}</h3>
+            <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', lineHeight: 1.5, marginBottom: '1.5rem', flex: 1 }}>
               Professional {key.toLowerCase()} blueprint including standard clauses and compliance headers for Indian courts.
             </p>
             

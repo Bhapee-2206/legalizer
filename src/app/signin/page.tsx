@@ -39,13 +39,13 @@ export default function SignInPage() {
   };
 
   return (
-    <main style={{ padding: '120px 5% 4rem 5%', display: 'flex', justifyContent: 'center', backgroundColor: 'var(--bg-secondary)', minHeight: '100vh' }}>
+    <main style={{ padding: '100px 5% 4rem 5%', display: 'flex', justifyContent: 'center', backgroundColor: 'var(--bg-secondary)', minHeight: '100vh' }}>
       
-      <div className="glass-panel animate-fade-in" style={{ maxWidth: '450px', width: '100%', padding: '3rem', backgroundColor: 'var(--bg-primary)' }}>
+      <div className="glass-panel animate-fade-in" style={{ maxWidth: '450px', width: '100%', padding: '2rem 1.5rem', backgroundColor: 'var(--bg-primary)' }}>
         
-        <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
-          <h1 style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>Welcome Back</h1>
-          <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>Secure Sign In for Legal Entities.</p>
+        <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
+          <h1 style={{ fontSize: 'clamp(1.5rem, 5vw, 2rem)', marginBottom: '0.5rem' }}>Welcome Back</h1>
+          <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem' }}>Secure Sign In for Legal Entities.</p>
         </div>
 
         {errorMsg && (

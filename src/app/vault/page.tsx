@@ -12,7 +12,7 @@ export default function EvidenceVault() {
   return (
     <main style={{ padding: '2rem 5%', display: 'flex', flexDirection: 'column', flex: 1, backgroundColor: 'var(--bg-secondary)' }}>
       
-      <div className="animate-fade-in" style={{ marginBottom: '2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      <div className="animate-fade-in stack-on-mobile" style={{ marginBottom: '2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <div>
           <h1 style={{ fontSize: '2.5rem', marginBottom: '0.5rem' }}>Evidence Vault</h1>
           <p style={{ color: 'var(--text-secondary)' }}>Highly secure, encrypted storage for case files and signed documents.</p>
@@ -24,18 +24,18 @@ export default function EvidenceVault() {
 
       <div className="glass-panel animate-fade-in" style={{ padding: '2rem', backgroundColor: 'var(--bg-primary)', animationDelay: '0.1s' }}>
         
-        <div style={{ display: 'flex', gap: '1rem', marginBottom: '2rem' }}>
+        <div style={{ display: 'flex', gap: '1rem', marginBottom: '2rem' }} className="stack-on-mobile">
           <input 
             type="text" 
             placeholder="Search evidence..." 
-            className="input-elegant"
+            className="input-elegant full-width-on-mobile"
             style={{ maxWidth: '400px' }}
           />
           <button className="btn-gold" style={{ padding: '12px 24px' }}>Search</button>
         </div>
 
-        <div style={{ border: '1px solid var(--border-light)', borderRadius: 'var(--radius-md)', overflow: 'hidden' }}>
-          <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
+        <div className="table-responsive" style={{ border: '1px solid var(--border-light)', borderRadius: 'var(--radius-md)', overflow: 'hidden' }}>
+          <table style={{ width: '100%', minWidth: '800px', borderCollapse: 'collapse', textAlign: 'left' }}>
             <thead>
               <tr style={{ backgroundColor: 'var(--bg-secondary)', borderBottom: '1px solid var(--border-strong)' }}>
                 <th style={{ padding: '1rem 1.5rem', fontWeight: 600, color: 'var(--text-secondary)' }}>File Name</th>

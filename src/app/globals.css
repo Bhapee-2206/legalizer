@@ -165,35 +165,114 @@ h1, h2, h3, h4, h5, h6 {
 @media (max-width: 768px) {
   header {
     height: 70px !important;
+    padding: 0 1.5rem !important;
   }
   
-  header nav a {
-    display: none; /* Auto-hide secondary links on mobile */
+  header nav a:not(.mobile-nav-link), 
+  header nav div:not(.mobile-nav-group),
+  header nav button:not(.hamburger) {
+    display: none; /* Hide most items on mobile by default */
   }
-  
-  header nav .btn-primary, header nav .btn-gold {
-    padding: 8px 16px !important;
-    font-size: 0.85rem !important;
+
+  /* Show specific elements we want to keep */
+  header nav .mobile-nav-toggle {
+    display: flex !important;
   }
 
   main {
-    padding: 100px 3% 2rem 3% !important;
+    padding: 90px 4% 2rem 4% !important;
   }
 
-  h1 { font-size: 2rem !important; }
-  h2 { font-size: 1.5rem !important; }
+  h1 { font-size: 1.8rem !important; }
+  h2 { font-size: 1.4rem !important; }
 
   .dashboard-grid {
     grid-template-columns: 1fr !important;
+  }
+
+  .stack-on-mobile {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 1rem !important;
+  }
+
+  .table-responsive {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .hide-on-mobile {
+    display: none !important;
+  }
+
+  .full-width-on-mobile {
+    width: 100% !important;
+    max-width: none !important;
+  }
+}
+
+/* Mobile Menu Styles */
+.mobile-menu-overlay {
+  position: fixed;
+  top: 70px;
+  left: 0;
+  width: 100%;
+  height: calc(100vh - 70px);
+  background: var(--bg-primary);
+  z-index: 999;
+  display: flex;
+  flex-direction: column;
+  padding: 2rem;
+  gap: 1.5rem;
+  transform: translateX(100%);
+  transition: transform 0.3s ease-in-out;
+}
+
+.mobile-menu-overlay.open {
+  transform: translateX(0);
+}
+
+.mobile-nav-link {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  text-decoration: none;
+  border-bottom: 1px solid var(--border-light);
+  padding-bottom: 0.5rem;
+}
+
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 10px;
+  z-index: 1001;
+}
+
+.hamburger span {
+  display: block;
+  width: 25px;
+  height: 2px;
+  background-color: var(--text-primary);
+  transition: all 0.3s ease;
+}
+
+@media (max-width: 768px) {
+  .hamburger {
+    display: flex;
   }
 }
 
 @media (max-width: 480px) {
   .glass-panel {
-    padding: 1.5rem !important;
+    padding: 1.25rem !important;
   }
   
   .btn-primary, .btn-gold {
     width: 100%;
+    text-align: center;
   }
 }

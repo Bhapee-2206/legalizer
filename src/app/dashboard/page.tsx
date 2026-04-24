@@ -1,13 +1,72 @@
 "use client";
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { ActivityChart, TemplateUsageChart } from '@/components/DashboardCharts';
 import Link from 'next/link';
 import { useSimulation } from '@/context/SimulationContext';
 
 export default function Dashboard() {
-  const { role, user, activeCase, respondToCase, pendingAdvocates, approveAdvocate } = useSimulation();
+  const { role, user, activeCase, respondToCase, login, activities } = useSimulation();
+  const [realPendingAdvocates, setRealPendingAdvocates] = useState<any[]>([]);
+  const [allAdvocates, setAllAdvocates] = useState<any[]>([]);
+
+  useEffect(() => {
+    if (role === 'Admin') {
+      fetch('/api/advocates/pending')
+        .then(res => res.json())
+        .then(data => {
+          if (data.advocates) setRealPendingAdvocates(data.advocates);
+        })
+        .catch(err => console.error("Error fetching pending advocates:", err));
+        
+      fetch('/api/advocates/all')
+        .then(res => res.json())
+        .then(data => {
+          if (data.advocates) setAllAdvocates(data.advocates);
+        })
+        .catch(err => console.error("Error fetching all advocates:", err));
+    }
+  }, [role]);
+
+  const handleApprove = async (id: string, approve: boolean) => {
+    try {
+      const res = await fetch('/api/advocates/verify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id, approve })
+      });
+      if (res.ok) {
+        setRealPendingAdvocates(prev => prev.filter(a => a.id !== id));
+        if (approve) {
+          // Update the all advocates list to show as verified
+          setAllAdvocates(prev => prev.map(a => a.id === id ? { ...a, isVerified: true } : a));
+        } else {
+          // Remove from all advocates list if rejected
+          setAllAdvocates(prev => prev.filter(a => a.id !== id));
+        }
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const handleRefreshStatus = async () => {
+    if (!user || !user.id) return;
+    try {
+      const res = await fetch(`/api/auth/status?id=${user.id}`);
+      const data = await res.json();
+      if (res.ok && data.isVerified) {
+        login(role!, { ...user, isVerified: true, status: 'Approved' });
+        window.location.reload();
+      } else {
+        alert("Status is still pending. The admin has not verified you yet.");
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
 
   const roleStyles: any = {
+
     Admin: { color: '#ef4444', bg: 'rgba(239, 68, 68, 0.1)' },
     Advocate: { color: '#ceb070', bg: 'rgba(206, 176, 112, 0.1)' },
     Client: { color: '#3b82f6', bg: 'rgba(59, 130, 246, 0.1)' }
@@ -24,16 +83,16 @@ export default function Dashboard() {
   }
 
   return (
-    <main style={{ padding: '2rem 5%', display: 'flex', flexDirection: 'column', flex: 1, backgroundColor: 'var(--bg-secondary)', marginTop: '80px' }}>
+    <main style={{ padding: '2rem 5%', display: 'flex', flexDirection: 'column', flex: 1, backgroundColor: 'var(--bg-secondary)', marginTop: 'var(--nav-height, 80px)' }}>
       
-      <div className="animate-fade-in" style={{ marginBottom: '2.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
+      <div className="animate-fade-in stack-on-mobile" style={{ marginBottom: '2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
         <div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '0.5rem' }}>
-            <h1 style={{ fontSize: '2.5rem' }}>Executive Dashboard</h1>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.5rem', flexWrap: 'wrap' }}>
+            <h1 style={{ fontSize: 'clamp(1.8rem, 5vw, 2.5rem)' }}>Executive Dashboard</h1>
             <div style={{ 
               padding: '4px 12px', 
               borderRadius: '20px', 
-              fontSize: '0.75rem', 
+              fontSize: '0.7rem', 
               fontWeight: 700, 
               color: roleStyles[role]?.color, 
               background: roleStyles[role]?.bg,
@@ -44,41 +103,65 @@ export default function Dashboard() {
               {role} View
             </div>
           </div>
-          <p style={{ color: 'var(--text-secondary)' }}>Welcome back, {user?.name || 'User'}. Managing your legal operations.</p>
+          <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>Welcome back, {user?.name || 'User'}. Managing your legal operations.</p>
         </div>
         
-        <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+        <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }} className="full-width-on-mobile">
           {role === 'Client' && !activeCase && (
-            <Link href="/connect" className="btn-gold" style={{ textDecoration: 'none' }}>Connect with Advocate</Link>
+            <Link href="/connect" className="btn-gold" style={{ textDecoration: 'none', padding: '10px 20px', fontSize: '0.9rem' }}>Connect</Link>
           )}
-          <Link href="/editor" className="btn-primary" style={{ textDecoration: 'none' }}>
-            + New Document
+          <Link href="/editor" className="btn-primary" style={{ textDecoration: 'none', padding: '10px 20px', fontSize: '0.9rem' }}>
+            + New Doc
           </Link>
         </div>
       </div>
 
-      {/* ADMIN PANEL: Advocate Verification */}
+      {/* ADMIN PANEL */}
       {role === 'Admin' && (
-        <div className="glass-panel animate-fade-in" style={{ padding: '2rem', marginBottom: '2rem', border: '1px solid var(--border-strong)' }}>
-          <h2 style={{ fontSize: '1.2rem', marginBottom: '1.5rem' }}>🛡️ Advocate Verification Requests</h2>
-          {pendingAdvocates.filter(a => a.status === 'Pending').length === 0 ? (
-            <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>No pending advocate verification requests.</p>
-          ) : (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-              {pendingAdvocates.filter(a => a.status === 'Pending').map(adv => (
-                <div key={adv.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1rem', background: 'var(--bg-secondary)', borderRadius: 'var(--radius-md)' }}>
-                  <div>
-                    <h4 style={{ marginBottom: '0.2rem' }}>{adv.name}</h4>
-                    <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Email: {adv.email} | Barcode: <strong>{adv.barcode}</strong></p>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+          <div className="glass-panel animate-fade-in" style={{ padding: '2rem', border: '1px solid var(--border-strong)' }}>
+            <h2 style={{ fontSize: '1.2rem', marginBottom: '1.5rem' }}>🛡️ Advocate Verification Requests</h2>
+            {realPendingAdvocates.length === 0 ? (
+              <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>No pending advocate verification requests.</p>
+            ) : (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                {realPendingAdvocates.map(adv => (
+                  <div key={adv.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1rem', background: 'var(--bg-secondary)', borderRadius: 'var(--radius-md)' }}>
+                    <div>
+                      <h4 style={{ marginBottom: '0.2rem' }}>{adv.name}</h4>
+                      <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Email: {adv.email} | Barcode: <strong>{adv.barcode}</strong></p>
+                    </div>
+                    <div style={{ display: 'flex', gap: '0.5rem' }}>
+                      <button onClick={() => handleApprove(adv.id, false)} className="btn-primary" style={{ background: '#ef4444', fontSize: '0.8rem', padding: '8px 16px' }}>Reject</button>
+                      <button onClick={() => handleApprove(adv.id, true)} className="btn-primary" style={{ background: '#10b981', fontSize: '0.8rem', padding: '8px 16px' }}>Approve</button>
+                    </div>
                   </div>
-                  <div style={{ display: 'flex', gap: '0.5rem' }}>
-                    <button onClick={() => approveAdvocate(adv.id, false)} className="btn-primary" style={{ background: '#ef4444', fontSize: '0.8rem', padding: '8px 16px' }}>Reject</button>
-                    <button onClick={() => approveAdvocate(adv.id, true)} className="btn-primary" style={{ background: '#10b981', fontSize: '0.8rem', padding: '8px 16px' }}>Approve</button>
+                ))}
+              </div>
+            )}
+          </div>
+          
+          <div className="glass-panel animate-fade-in" style={{ padding: '2rem', border: '1px solid var(--border-strong)' }}>
+            <h2 style={{ fontSize: '1.2rem', marginBottom: '1.5rem' }}>📚 All Registered Advocates</h2>
+            {allAdvocates.length === 0 ? (
+              <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>No advocates registered yet.</p>
+            ) : (
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '1rem' }}>
+                {allAdvocates.map(adv => (
+                  <div key={adv.id} style={{ padding: '1.2rem', background: 'var(--bg-secondary)', borderRadius: 'var(--radius-md)', borderLeft: `4px solid ${adv.isVerified ? '#10b981' : '#f59e0b'}` }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.5rem' }}>
+                      <h4 style={{ margin: 0 }}>{adv.name}</h4>
+                      <span style={{ fontSize: '0.7rem', padding: '2px 8px', borderRadius: '12px', background: adv.isVerified ? 'rgba(16, 185, 129, 0.1)' : 'rgba(245, 158, 11, 0.1)', color: adv.isVerified ? '#10b981' : '#f59e0b', fontWeight: 600 }}>
+                        {adv.isVerified ? 'Verified' : 'Pending'}
+                      </span>
+                    </div>
+                    <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', margin: '0 0 0.2rem 0' }}>{adv.email}</p>
+                    <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', margin: 0 }}>Barcode: <strong>{adv.barcode}</strong></p>
                   </div>
-                </div>
-              ))}
-            </div>
-          )}
+                ))}
+              </div>
+            )}
+          </div>
         </div>
       )}
 
@@ -92,7 +175,7 @@ export default function Dashboard() {
           </p>
           <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
             <Link href="/" className="btn-primary" style={{ background: 'var(--bg-tertiary)', color: 'var(--text-primary)', textDecoration: 'none' }}>Back to Home</Link>
-            <button className="btn-gold" onClick={() => window.location.reload()}>Refresh Status</button>
+            <button className="btn-gold" onClick={handleRefreshStatus}>Refresh Status</button>
           </div>
         </div>
       )}
@@ -149,21 +232,33 @@ export default function Dashboard() {
           <div className="glass-panel animate-fade-in" style={{ padding: '2rem', backgroundColor: 'var(--bg-primary)', animationDelay: '0.3s', paddingBottom: '3rem' }}>
             <h2 style={{ fontSize: '1.25rem', marginBottom: '1.5rem' }}>Recent Activity Log</h2>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-              {[
-                { event: 'Document Drafted', details: 'Residential Lease Deed created', time: '2 hours ago', icon: '📝' },
-                { event: 'Signature Sealed', details: 'NDA signed via Digital Signature pad', time: '5 hours ago', icon: '🖋️' },
-                { event: 'Vault Update', details: 'Identity Proof uploaded to secure storage', time: '1 day ago', icon: '🔐' },
-                { event: 'Case Connection', details: 'Consultation request sent to Advocate', time: '2 days ago', icon: '⚖️' }
-              ].map((activity, i) => (
-                <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', padding: '1rem', borderRadius: 'var(--radius-md)', background: 'var(--bg-secondary)', border: '1px solid var(--border-light)' }}>
-                  <div style={{ fontSize: '1.5rem' }}>{activity.icon}</div>
-                  <div style={{ flex: 1 }}>
-                    <h4 style={{ fontSize: '0.95rem', margin: 0 }}>{activity.event}</h4>
-                    <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', margin: 0 }}>{activity.details}</p>
-                  </div>
-                  <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 600 }}>{activity.time}</div>
-                </div>
-              ))}
+              {(() => {
+                const filteredActivities = role === 'Admin' ? activities : activities.filter((a: any) => a.userId === user?.email || a.userId === user?.id || a.global);
+                
+                if (!filteredActivities || filteredActivities.length === 0) {
+                  return (
+                    <div style={{ textAlign: 'center', padding: '2rem', color: 'var(--text-muted)', background: 'var(--bg-secondary)', borderRadius: 'var(--radius-md)' }}>
+                      No recent activity found.
+                    </div>
+                  );
+                }
+                
+                return filteredActivities.map((activity: any, i: number) => {
+                  const diffMin = Math.round((Date.now() - activity.timestamp) / 60000);
+                  const timeStr = diffMin < 1 ? 'Just now' : diffMin < 60 ? `${diffMin} min ago` : diffMin < 1440 ? `${Math.floor(diffMin/60)} hours ago` : `${Math.floor(diffMin/1440)} days ago`;
+                  
+                  return (
+                    <div key={activity.id} className="stack-on-mobile" style={{ display: 'flex', alignItems: 'center', gap: '1rem', padding: '1rem', borderRadius: 'var(--radius-md)', background: 'var(--bg-secondary)', border: '1px solid var(--border-light)' }}>
+                      <div style={{ fontSize: '1.25rem', width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--bg-primary)', borderRadius: '50%' }}>{activity.icon}</div>
+                      <div style={{ flex: 1 }}>
+                        <h4 style={{ fontSize: '0.9rem', margin: 0 }}>{activity.event}</h4>
+                        <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', margin: 0 }}>{activity.details}</p>
+                      </div>
+                      <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 600 }}>{timeStr}</div>
+                    </div>
+                  );
+                });
+              })()}
             </div>
           </div>
         </>

@@ -7,7 +7,7 @@ export async function POST(req: Request) {
   try {
     await connectToDatabase();
     const body = await req.json();
-    const { name, email, password, role, barcode } = body;
+    const { name, email, password, role, barcode, specialization, location, experience } = body;
 
     // Check if user exists
     const existingUser = await User.findOne({ email });
@@ -23,6 +23,9 @@ export async function POST(req: Request) {
       password: hashedPassword,
       role: role || 'Client',
       barcode,
+      specialization,
+      location,
+      experience,
       isVerified: role === 'Advocate' ? false : true // Advocates need admin approval
     });
 
